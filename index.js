@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors'); // Importando o cors
 const app = express();
 const port = 3000;
 
@@ -6,6 +7,9 @@ let tarefas = []; // Lista de tarefas em memória
 
 // Middleware para interpretar JSON
 app.use(express.json());
+
+// Habilita o CORS para todas as origens
+app.use(cors()); // Isso permite que qualquer domínio acesse as rotas
 
 // Rota para obter todas as tarefas
 app.get('/tarefas', (req, res) => {
@@ -35,7 +39,7 @@ app.put('/tarefas/:id', (req, res) => {
   const { id } = req.params;
   const { titulo, concluida } = req.body;
 
-  const tarefa = tarefas.find(t => t.id === parseInt(id));
+  const tarefa = tarefas.find((t) => t.id === parseInt(id));
 
   if (!tarefa) {
     return res.status(404).json({ message: 'Tarefa não encontrada.' });
@@ -51,7 +55,7 @@ app.put('/tarefas/:id', (req, res) => {
 app.delete('/tarefas/:id', (req, res) => {
   const { id } = req.params;
 
-  const index = tarefas.findIndex(t => t.id === parseInt(id));
+  const index = tarefas.findIndex((t) => t.id === parseInt(id));
 
   if (index === -1) {
     return res.status(404).json({ message: 'Tarefa não encontrada.' });
